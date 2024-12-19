@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Study Planner</h1>
+        
+        <form action="/generate_plan" method="POST" id="studyPlanForm">
+            <div class="subject-container" id="subjectContainer">
+                <div class="subject-entry">
+                    <h3>Subject 1</h3>
+                    <input type="text" name="subject_names[]" placeholder="Enter subject name" required>
+                    <div class="subject-details">
+                        <div>
+                            <label>Difficulty (1-5):</label>
+                            <input type="range" name="difficulties[]" min="1" max="5" value="3" class="slider" oninput="this.nextElementSibling.value = this.value">
+                            <output>3</output>
+                        </div>
+                        <div>
+                            <label>Number of Topics:</label>
+                            <input type="number" name="topics[]" min="1" value="1" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" onclick="addSubject()" class="add-btn">+ Add Another Subject</button>
+            
+            <div class="time-constraints">
+                <div>
+                    <label>Hours Available Per Day:</label>
+                    <input type="number" name="hours_per_day" min="0.5" step="0.5" value="2" required>
+                </div>
+                <div>
+                    <label>Number of Days:</label>
+                    <input type="number" name="deadline_days" min="1" value="30" required>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Generate Study Plan</button>
+        </form>
+    </div>
+
+    <script>
+        let subjectCount = 1;
+        
+        function addSubject() {
+            subjectCount++;
+            const container = document.getElementById('subjectContainer');
+            const newSubject = document.createElement('div');
+            newSubject.className = 'subject-entry';
+            newSubject.innerHTML = `
+                <h3>Subject ${subjectCount}</h3>
+                <input type="text" name="subject_names[]" placeholder="Enter subject name" required>
+                <div class="subject-details">
+                    <div>
+                        <label>Difficulty (1-5):</label>
+                        <input type="range" name="difficulties[]" min="1" max="5" value="3" class="slider" oninput="this.nextElementSibling.value = this.value">
+                        <output>3</output>
+                    </div>
+                    <div>
+                        <label>Number of Topics:</label>
+                        <input type="number" name="topics[]" min="1" value="1" required>
+                    </div>
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="remove-btn">Remove</button>
+            `;
+            container.appendChild(newSubject);
+        }
+    </script>
+</body>
+</html>
